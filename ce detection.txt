@@ -1,0 +1,14 @@
+local success, response = pcall(
+local coregui = game.CoreGui
+local playergui = game.Players.LocalPlayer.PlayerGui
+if coregui ~= playergui and coregui:GetChildren() ~= playergui:GetChildren() do
+  return true
+else
+return false
+end
+)
+if response == true then
+  print("Not a cheat engine!")
+else
+  print("Thats a cheat engine")
+end
