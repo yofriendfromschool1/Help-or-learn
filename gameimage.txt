@@ -1,0 +1,10 @@
+MarketplaceService = game:GetService("MarketplaceService")
+
+portal = script.Parent
+
+id    = portal.PlaceID.Value
+decal = portal.Screen.Decal
+
+details = MarketplaceService:GetProductInfo(id)
+
+decal.Texture = "rbxassetid://" .. details.IconImageAssetId

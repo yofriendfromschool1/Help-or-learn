@@ -1,0 +1,7 @@
+while true do
+--code
+-- put a wait so game dont crash
+end -- or
+while wait() do
+-- code
+end

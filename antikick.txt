@@ -1,0 +1,7 @@
+local = f  
+f = hookmetamethod(game.Players.LocalPlayers,"___namecall", function(...) 
+if getnamecallmethod()-- "Kick" then
+     return 
+     end
+return f()
+end)

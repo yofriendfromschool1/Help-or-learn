@@ -1,0 +1,6 @@
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+        Text = "If someone uses the clear / clr command, you'll have to re-apply the script."; --What it says
+        Color = Color3.new(0, 127, 0); -- color code RedGreenBlue Code
+        Font = Enum.Font.fonthere;
+        FontSize = Enum.FontSize.Sizenumberhere;
+        })

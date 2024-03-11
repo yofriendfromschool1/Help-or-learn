@@ -1,0 +1,5 @@
+makefolder("test.txt", "Testing!") -- Makes a folder in workspace First Text is the name second is what is in the folder
+delfolder("test.txt") -- Deletes a folder
+appendfolder("test.txt", "Testing!") -- Same as write folder but doesnt over write the folder
+isfolder("test.txt") -- returns true if you specified a valid folder.
+readfolder("test.txt") -- reads a folder if it exists, erroring if it does not.

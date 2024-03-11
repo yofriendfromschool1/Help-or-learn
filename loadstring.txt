@@ -1,0 +1,3 @@
+loadstring(game:HttpGet('Link'))()
+--or
+loadstring(game:HttpGet(('Pastebin Raw Link'),true))()

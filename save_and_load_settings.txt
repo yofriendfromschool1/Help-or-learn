@@ -1,0 +1,427 @@
+
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+_G.settings = {
+   esptoggle  = false;
+   infjump = false;
+   fly62 = false;
+   nameesp = false;
+   boxesp = false;
+   traceesp = false;
+}
+function loadsettings()
+    print("loading settings --")
+    local HttpService = game:getService("HttpService")
+    if (readfile and isfile and isfile("Universal FE.txt")) then
+        _G.settings = HttpService:JSONDecode(readfile("Universal FE.txt"))
+        print("Settings loaded --")
+    end
+    end
+    
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+function savesettings()
+    print("Saving Settings --")
+    local json
+    local HttpService = game:getService("HttpService")
+       if writefile then
+        json = HttpService:JSONEncode(_G.settings)
+        writefile("Universal FE.txt", json)
+        else
+           print("CANT SAVE SETTINGS CAUSE TRASH EXECUTOR") 
+    end
+end
+
+loadsettings()
+ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G-Hub/main/Karrot-Esp"))()
+if _G.settings.esptoggle then
+     firstload = true
+    if firstload == true then
+        ESP.Tracers = false
+        ESP.Names = false
+        ESP.Boxes = false
+    end
+    firstload = false
+end
+
+if _G.settings.boxesp then
+    ESP.Boxes = true
+    firstload = false
+end
+
+if _G.settings.traceesp then
+    ESP.Tracers = true
+    firstload = false
+    end
+
+if _G.settings.infjump then
+     Infinite = true
+     game:GetService("UserInputService").JumpRequest:connect(function()
+        if Infinite then
+            game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
+        end
+     end)
+end
+
+if _G.settings.fly62 then
+    sex2 = true
+    local Max = 0
+    local Players = game.Players
+    local LP = Players.LocalPlayer
+    local Mouse = LP:GetMouse()
+    Mouse.KeyDown:connect(function(k)
+    if k:lower() == 'e' then
+    Max = Max + 1
+    getgenv().Fly = false
+    if sex2 then
+    local T = LP.Character.UpperTorso
+    local S = {
+    F = 0,
+    B = 0,
+    L = 0,
+    R = 0
+    }
+    local S2 = {
+    F = 0,
+    B = 0,
+    L = 0,
+    R = 0
+    }
+    local SPEED = 5
+    local function FLY()
+    getgenv().Fly = true
+    local BodyGyro = Instance.new('BodyGyro', T)
+    local BodyVelocity = Instance.new('BodyVelocity', T)
+    BodyGyro.P = 9e4
+    BodyGyro.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+    BodyGyro.cframe = T.CFrame
+    BodyVelocity.velocity = Vector3.new(0, 0.1, 0)
+    BodyVelocity.maxForce = Vector3.new(9e9, 9e9, 9e9)
+    spawn(function()
+    repeat
+    wait()
+    LP.Character.Humanoid.PlatformStand = false
+    if S.L + S.R ~= 0 or S.F + S.B ~= 0 then
+    SPEED = 200
+    elseif not (S.L + S.R ~= 0 or S.F + S.B ~= 0) and SPEED ~= 0 then
+    SPEED = 0
+    end
+    if (S.L + S.R) ~= 0 or (S.F + S.B) ~= 0 then
+    BodyVelocity.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (S.F + S.B)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(S.L + S.R, (S.F + S.B) * 0.2, 0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+    S2 = {
+    F = S.F,
+    B = S.B,
+    L = S.L,
+    R = S.R
+    }
+    elseif (S.L + S.R) == 0 and (S.F + S.B) == 0 and SPEED ~= 0 then
+    BodyVelocity.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (S2.F + S2.B)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(S2.L + S2.R, (S2.F + S2.B) * 0.2, 0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+    else
+    BodyVelocity.velocity = Vector3.new(0, 0.1, 0)
+    end
+    BodyGyro.cframe = game.Workspace.CurrentCamera.CoordinateFrame
+    until not getgenv().Fly
+    S = {
+    F = 0,
+    B = 0,
+    L = 0,
+    R = 0
+    }
+    S2 = {
+    F = 0,
+    B = 0,
+    L = 0,
+    R = 0
+    }
+    SPEED = 0
+    BodyGyro:destroy()
+    BodyVelocity:destroy()
+    LP.Character.Humanoid.PlatformStand = false
+    end)
+    end
+    Mouse.KeyDown:connect(function(k)
+    if k:lower() == 'w' then
+    S.F = 1
+    elseif k:lower() == 's' then
+    S.B = -1
+    elseif k:lower() == 'a' then
+    S.L = -1
+    elseif k:lower() == 'd' then
+    S.R = 1
+    end
+    end)
+    Mouse.KeyUp:connect(function(k)
+    if k:lower() == 'w' then
+    S.F = 0
+    elseif k:lower() == 's' then
+    S.B = 0
+    elseif k:lower() == 'a' then
+    S.L = 0
+    elseif k:lower() == 'd' then
+    S.R = 0
+    end
+    end)
+    FLY()
+    if Max == 2 then
+    getgenv().Fly = false
+    Max = 0
+    end
+    end
+    end
+    end)
+end
+
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+if _G.settings.nameesp then
+ESP.Names = true
+firstload = false
+end
+
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/AikaV3rm/UiLib/master/Lib.lua')))()
+
+local w = library:CreateWindow("Universal FE") -- Creates the window
+
+local a = w:CreateFolder("Basic") -- Create Basic foldes
+
+local b = w:CreateFolder("Teleports") -- Create Teleports folder
+
+local c = w:CreateFolder("ESP") -- Create ESP folder
+
+local e = w:CreateFolder("Developer") -- Create Developer folder
+
+local d = w:CreateFolder("Extra") -- Create Extra folder
+
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+a:Slider("Walkspeed",{
+    min = 10; -- min value of the slider
+    max = 200; -- max value of the slider
+    precise = true; -- max 2 decimals
+},function(value)
+    print(value)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = tonumber(value)
+end)
+
+a:Slider("JumpPower",{
+    min = 10; -- min value of the slider
+    max = 200; -- max value of the slider
+    precise = true; -- max 2 decimals
+},function(value2)
+    print(value2)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = tonumber(value2)
+end)
+
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+a:Toggle("Infinite jump",function(State)
+    Infinite = State
+    _G.settings.infjump = State
+    savesettings()
+    game:GetService("UserInputService").JumpRequest:connect(function()
+        if Infinite then
+            game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
+        end
+    end)
+end)
+
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+a:Toggle("Fly (E toggle)",function(State)
+    sex2 = State
+    _G.settings.fly62 = State
+    savesettings()
+    local Max = 0
+    local Players = game.Players
+    local LP = Players.LocalPlayer
+    local Mouse = LP:GetMouse()
+    Mouse.KeyDown:connect(function(k)
+    if k:lower() == 'e' then
+    Max = Max + 1
+    getgenv().Fly = false
+    if sex2 then
+    local T = LP.Character.UpperTorso
+    local S = {
+    F = 0,
+    B = 0,
+    L = 0,
+    R = 0
+    }
+    local S2 = {
+    F = 0,
+    B = 0,
+    L = 0,
+    R = 0
+    }
+    local SPEED = 5
+    local function FLY()
+    getgenv().Fly = true
+    local BodyGyro = Instance.new('BodyGyro', T)
+    local BodyVelocity = Instance.new('BodyVelocity', T)
+    BodyGyro.P = 9e4
+    BodyGyro.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+    BodyGyro.cframe = T.CFrame
+    BodyVelocity.velocity = Vector3.new(0, 0.1, 0)
+    BodyVelocity.maxForce = Vector3.new(9e9, 9e9, 9e9)
+    spawn(function()
+    repeat
+    wait()
+    LP.Character.Humanoid.PlatformStand = false
+    if S.L + S.R ~= 0 or S.F + S.B ~= 0 then
+    SPEED = 200
+    elseif not (S.L + S.R ~= 0 or S.F + S.B ~= 0) and SPEED ~= 0 then
+    SPEED = 0
+    end
+    if (S.L + S.R) ~= 0 or (S.F + S.B) ~= 0 then
+    BodyVelocity.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (S.F + S.B)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(S.L + S.R, (S.F + S.B) * 0.2, 0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+    S2 = {
+    F = S.F,
+    B = S.B,
+    L = S.L,
+    R = S.R
+    }
+    elseif (S.L + S.R) == 0 and (S.F + S.B) == 0 and SPEED ~= 0 then
+    BodyVelocity.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (S2.F + S2.B)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(S2.L + S2.R, (S2.F + S2.B) * 0.2, 0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+    else
+    BodyVelocity.velocity = Vector3.new(0, 0.1, 0)
+    end
+    BodyGyro.cframe = game.Workspace.CurrentCamera.CoordinateFrame
+    until not getgenv().Fly
+    S = {
+    F = 0,
+    B = 0,
+    L = 0,
+    R = 0
+    }
+    S2 = {
+    F = 0,
+    B = 0,
+    L = 0,
+    R = 0
+    }
+    SPEED = 0
+    BodyGyro:destroy()
+    BodyVelocity:destroy()
+    LP.Character.Humanoid.PlatformStand = false
+    end)
+    end
+    Mouse.KeyDown:connect(function(k)
+    if k:lower() == 'w' then
+    S.F = 1
+    elseif k:lower() == 's' then
+    S.B = -1
+    elseif k:lower() == 'a' then
+    S.L = -1
+    elseif k:lower() == 'd' then
+    S.R = 1
+    end
+    end)
+    Mouse.KeyUp:connect(function(k)
+    if k:lower() == 'w' then
+    S.F = 0
+    elseif k:lower() == 's' then
+    S.B = 0
+    elseif k:lower() == 'a' then
+    S.L = 0
+    elseif k:lower() == 'd' then
+    S.R = 0
+    end
+    end)
+    FLY()
+    if Max == 2 then
+    getgenv().Fly = false
+    Max = 0
+    end
+    end
+    end
+    end)
+end)
+
+b:Label("Save and load locations",{
+    TextSize = 15; -- Self Explaining
+    TextColor = Color3.fromRGB(255,255,255); -- Self Explaining
+    BgColor = Color3.fromRGB(69,69,69); -- Self Explaining
+    
+}) 
+
+b:Button("Save 1",function()
+    position1 = game.Players.LocalPlayer.Character.Humanoid.RootPart.Position
+    print("Saving location 1")
+end)
+
+b:Button("Load 1",function()
+    game.Players.LocalPlayer.Character:MoveTo(position1)
+    print("Tp to location 1")
+end)
+
+b:Button("Save 2",function()
+    position2 = game.Players.LocalPlayer.Character.Humanoid.RootPart.Position
+    print("Saving location 2")
+end)
+
+b:Button("Load 2",function()
+    game.Players.LocalPlayer.Character:MoveTo(position2)
+    print("Tp to location 2")
+end)
+
+
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS
+
+ --Load karrot ESP
+
+c:Toggle("Enable ESP",function(State)
+    _G.settings.esptoggle = State
+    savesettings()
+    firstload = true
+    if firstload == true then
+        ESP.Tracers = false
+        ESP.Names = false
+        ESP.Boxes = false
+    end
+    ESP:Toggle(State) --Toggle karrot ESP
+    firstload = false
+end)
+
+c:Toggle("Tracers ESP",function(State)
+    ESP.Tracers = State
+    _G.settings.traceesp = State
+    savesettings()
+    firstload = false
+end)
+
+c:Toggle("Name ESP",function(State)
+    ESP.Names = State
+    _G.settings.nameesp = State
+    savesettings()
+    firstload = false
+end)
+
+c:Toggle("Boxes ESP",function(State)
+    ESP.Boxes = State
+    _G.settings.boxesp = State
+    savesettings()
+    firstload = false
+end)
+
+local notifSound = Instance.new("Sound",workspace)
+notifSound.PlaybackSpeed = 1.5
+notifSound.Volume = 0.15
+notifSound.SoundId = "rbxassetid://170765130"
+notifSound.PlayOnRemove = true
+notifSound:Destroy()
+game.StarterGui:SetCore("SendNotification", {Title = "Universal FE", Text = "Universal FE loaded successfully!", Icon = "rbxassetid://505845268", Duration = 5, Button1 = "Okay"})
+
+e:Button("Dex v4",function()
+    loadstring(game:GetObjects("rbxassetid://418957341")[1].Source)()
+end)
+
+d:Button("CMD-X",function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source", true))()
+end)
+
+d:Label("Abeja TÃ¡ctica#6795",{
+    TextSize = 20; -- Self Explaining
+    TextColor = Color3.fromRGB(255,255,255); -- Self Explaining
+    BgColor = Color3.fromRGB(69,69,69); -- Self Explaining
+    
+}) 
+-- THIS IS Abeja Táctica#6795 SCRIPT NOT MINE I JUST MADE THE SAVE/LOAD FUNCTIONS

@@ -1,0 +1,10 @@
+-- this is what admin scripts use
+local discord = "sy!discord"
+
+game.Players.LocalPlayer.Chatted:Connect(function(message) if string.match(discord, message) then 
+    setclipboard("https://discord.com/invite/jVf7eSrED9")
+    else 
+        return 
+end 
+    end)
+-- when typed "sy!discord" it copys discord invite

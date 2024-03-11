@@ -1,0 +1,19 @@
+if syn then
+print("Synapse User")
+elseif Krnl then
+print("Krnl User")
+elseif proto then
+print("ProtoSmasher User")
+end
+local S = ""
+if identifyexecutor then
+	S = select(1, identifyexecutor())
+end
+print(S)
+if S == "WeAreDevs" then
+print("WRD/EasyExploits User")
+elseif S == "ScriptWare" then
+print("ScriptWare User")
+elseif S == "Skisploit" then
+print("New easyxploits api/skisploit")
+end

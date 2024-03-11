@@ -1,0 +1,19 @@
+--[[join someones place/jobid if yk what game they is in
+```Roblox.GameLauncher.joinGameInstance(placeid, "jobid")``` 
+open roblox.com and go to console and paste that in and replace placeid with the place id and jobid with the jobid
+how to find out place id is in what game ur playing u can see the place id in the link for example: 4483381587/a-literal-baseplate 
+a literal baseplates id is 4483381587 
+or you can execute this script tru a executor 
+```game:GetService("TeleportService"):TeleportToPlaceInstance(placeid, "jobid")```
+so js replace placeid and jobid
+to find out jobid u can execute this script
+```print(game.JobId)```
+or u can use this chrome extension 
+https://chromewebstore.google.com/detail/roblox-jobid-join/pdeebkpgdaflejgihpbniammmelkdnac
+To join a server, add a `?serverJobId=<job-id>` query parameter to the URL. This will automatically launch Roblox much like links with VIP server codes do.]]--
+local placeid =  --place id here
+local jobid = "" -- job id here
+print("The PlaceId is "..game.PlaceId) -- prints place id to the console
+print("The JobId is "..game.JobId) -- prints JobId to the console
+setclipboard(game.JobId) -- copys the job id since it is long
+game:GetService("TeleportService"):TeleportToPlaceInstance(placeid, jobid) --tp to game script

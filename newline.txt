@@ -1,0 +1,2 @@
+-- \n = new line
+print("lol\nThis Is A New Line!")

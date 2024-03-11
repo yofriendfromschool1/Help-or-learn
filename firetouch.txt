@@ -1,0 +1,20 @@
+-- https://x.synapse.to/docs/reference/environment.html
+-- https://www.youtube.com/watch?v=9JR6nrhKryI
+firetouchinterest(<Instance> Part, <BasePart> ToTouch, <uint> Toggle)
+-- example below
+-- Game: Legends Of Speed ⚡ https://web.roblox.com/games/3101667897/Legends-Of-Speed
+getgenv().collectOrbsToggle = true
+
+spawn(function()
+    while wait() do
+        if not getgenv().collectOrbsToggle then break end
+        for i, v in pairs(game:GetService("Workspace").orbFolder:GetDescendants()) do
+            if v.Name == "TouchInterest" and v.Parent then
+                firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 0)
+                wait(0.1)
+                firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 1)
+                break
+            end
+        end
+    end
+end)

@@ -1,0 +1,2 @@
+a,b,c = "lol", "lol1", "lol2"
+print(a,b,c)

@@ -1,0 +1,9 @@
+play = game.Players.LocalPlayer
+local whatever = game:getService("UserInputService")
+game:getService("RunService"):BindToRenderStep("",0,function()
+	char = play.Character
+	if char then h = char:findFirstChildOfClass("Humanoid") end
+	if whatever:IsKeyDown(Enum.KeyCode.Key) then
+		whatever here
+	end
+end)

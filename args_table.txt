@@ -1,0 +1,55 @@
+local args = {
+        [1] = "lol args",
+        [2] = "i hate this"
+    }
+print(unpack(args))
+-- or start from 0
+
+local args = {
+        [0] = "lol args",
+        [1] = "i hate this"
+    }
+print(unpack(args))
+-- choose
+-- you can put negative numbers too
+local args = {
+        [0] = "lol args",
+        [1] = "i hate this"
+    }
+print(args[1])
+-- also args can be anything 
+-- you can change it too!
+local args = {
+        [0] = "lol args",
+        [1] = "i hate this"
+    }
+args[1] = 'lol'
+print(args[1])
+-- you can add to tables too!
+local args = {
+        [0] = "lol args",
+        [1] = "i hate this"
+    }
+args[2] = 'lo32l'
+print(args[2])
+for i,v in pairs(args) do
+print(i,v)
+end
+-- you can make it letters too!
+local args = {
+        ['bro'] = "lol args",
+        ['lol'] = "i hate this"
+    }
+print(args['lol'])
+-- you can also sort it
+local args = {
+        ['bro'] = "lol args",
+        ['lol'] = "i hate this"
+    }
+for i,v in pairs(args) do
+	print(v)
+end
+table.sort(args)
+for i,v in pairs(args) do
+	print(v)
+end

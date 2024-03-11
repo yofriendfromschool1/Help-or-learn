@@ -1,0 +1,47 @@
+-- Module Script
+local ModuleScripts = {}
+
+do
+	local ModuleScript = Instance.new('ModuleScript', game.workspace) -- game.workspace is where the ModuleScript will be located
+	ModuleScript.Name = "ModuleScriptTest" -- ModuleScriptTest is the name of the ModuleScript.
+	local function module_script() -- anything beneath this line is what will be in the ModuleScript
+		local module = {}
+		
+		return module
+		
+	end -- end of ModuleScript
+	ModuleScripts[script] = module_script
+end
+-- LocalScript
+local function LocalScript()
+	local LocalScript = Instance.new('LocalScript', game.workspace) -- game.workspace is where the LocalScript will be located
+	LocalScript.Name = "LocalScriptTest" -- LocalScriptTest is the name of the LocalScript.
+	local req = require
+	local require = function(obj)
+		local fake = ModuleScripts[obj]
+		if fake then
+			return fake()
+		end
+		return req(obj)
+	end -- Anything beneath this line is what will be in the LocalScript
+
+	print("Hello world!")
+	
+end -- end of LocalScript
+coroutine.wrap(LocalScript)()
+local function Script()
+	local Script = Instance.new('Script', game.workspace) -- game.workspace is where the Script will be located
+	Script.Name = "ScriptTest" -- ScriptTest is the name of the Script.
+	local req = require
+	local require = function(obj)
+		local fake = ModuleScripts[obj]
+		if fake then
+			return fake()
+		end
+		return req(obj)
+	end -- Anything beneath this line is what will be in the Script
+
+	print("Hello world!")
+	
+end -- end of Script
+coroutine.wrap(Script)()

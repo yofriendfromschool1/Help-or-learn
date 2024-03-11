@@ -1,0 +1,2 @@
+<bool> isnetworkowner(<BasePart> Part)
+--Returns true if the Part is owned by the player.

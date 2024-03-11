@@ -1,0 +1,7 @@
+local UIS = game:getService("UserInputService")
+
+UIS.InputBegan:Connect(function(KeyCode)
+	if KeyCode.KeyCode == Enum.KeyCode.KeyHere then
+	-- script here
+	end
+end)

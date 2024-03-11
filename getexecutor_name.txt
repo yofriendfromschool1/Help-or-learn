@@ -1,0 +1,4 @@
+-- ONLY WORKS ON CERTAIN EXECUTORS/PLATFORMS
+-- https://docs.script-ware.com/script-ware-functions for more info
+getexecutorname()
+identifyexecutor()

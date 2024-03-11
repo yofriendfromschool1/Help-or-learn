@@ -1,0 +1,59 @@
+-- Return the absolute, or non-negative value, of a given value.
+print(math.abs(-100))
+print(math.abs(25.67))
+-- Return the inverse cosine and sine in radians of the given value.
+print(math.acos(1))
+print(math.acos(0))
+print(math.asin(0))
+print(math.asin(1))
+--[[ Return the integer no greater than or no less than the given value (even for negatives).]]--
+math.floor(0.5)
+math.ceil(0.5)
+math.floor(-0.5)
+math.ceil(-0.5)
+-- Return the cosine, sine and tangent value for a given value in radians.
+math.cos(math.pi / 4)
+math.sin(0.123)
+math.tan(5/4)
+math.tan(.77)
+-- Convert from radians to degrees and vice versa.
+math.deg(math.pi)
+math.deg(math.pi / 2)
+math.rad(180)
+math.rad(1)
+--[[ math.exp(myval) returns e (the base of natural logarithms) raised to the power myval. math.log() returns the inverse of this. math.exp(1) returns e.]]--
+math.exp(0)
+math.exp(1)
+math.exp(27)
+math.log(532048240601)
+math.log(3)
+-- Return the minimum or maximum value from a variable length list of arguments.
+math.min(1,2)
+math.min(1.2, 7, 3)
+math.min(1.2, -7, 3)
+math.max(1.2, -7, 3)
+math.max(1.2, 7, 3)
+-- Return the integral and fractional parts of the given number.
+math.modf(5)
+math.modf(5.3)
+math.modf(-5.3)
+-- If you want the modulus (remainder), look for the modulo % operator instead.
+--[[ Return the square root of a given number. Only non-negative arguments are allowed. ]]--
+math.sqrt(100)
+math.sqrt(1234)
+--[[ math.random() generates pseudo-random numbers uniformly distributed. Supplying argument alters its behaviour:
+math.random() with no arguments generates a real number between 0 and 1.
+math.random(upper) generates integer numbers between 1 and upper (both inclusive).
+math.random(lower, upper) generates integer numbers between lower and upper (both inclusive). ]]--
+math.random()
+math.random(100)
+math.random(70,80)
+--[[ upper and lower must be integer. In other case Lua casts upper into an integer, sometimes giving math.floor(upper) and others math.ceil(upper), with unexpected results (the same for lower).
+The math.randomseed() function sets a seed for the pseudo-random generator: Equal seeds produce equal sequences of numbers. ]]--
+math.randomseed(1234)
+-- math.huge is a constant. It represents +infinity.
+math.huge
+-- Note that some operations on math.huge return a special "not-a-number" value that displays as nan. This is a bit of a misnomer. nan is a number type, though it's different from other numbers:
+type(math.huge * 0)
+-- This is a part of the constant Pi.
+math.pi

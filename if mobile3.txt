@@ -1,0 +1,11 @@
+local UserInputService = game:GetService("UserInputService")
+local platform = UserInputService:GetPlatform()
+local string = 33
+
+if platform == Enum.Platform.IOS or platform == Enum.Platform.Android then
+    string = 1
+else
+    string = 2
+end
+
+print(string)

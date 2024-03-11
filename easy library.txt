@@ -1,0 +1,74 @@
+-- Easy Library by Sky
+-- Meant for people who dont know how to code or lazy ppl idk
+local Players = game:GetService("Players") -- Players
+local LocalPlayer = Players.LocalPlayer -- LocalPlayer
+local Character = LocalPlayer.Character -- Character
+local Humanoid = Character.Humanoid -- Humanoid
+local Location = Character.HumanoidRootPart.CFrame -- Location of player
+local function Speed(des) -- Changes LocalPlayer speed to desired choice
+    Humanoid.WalkSpeed = des
+end
+local function Jump(des) -- Changes LocalPlayer jump power to desired choice
+    Humanoid.JumpPower = des
+end
+local function Gravity(dess) -- Changes LocalPlayer Gravity to desired choice
+    workspace.Gravity = dess
+end
+local function TeleportToCFrame(x,y,z) -- Teleports Player to cframe if yk what that is
+    Character.HumanoidRootPart.CFrame = CFrame.new(x,y,z)
+end
+local function TeleportToPlayer(name) -- Teleports to player just put their name in in quotes so like 'yosad' or "dasdda"
+    local lol
+    local istt
+    for i,v in pairs(Players:GetDescendants()) do
+        if v.Name == name then
+            istt = true
+            lol = v.Character.HumanoidRootPart.CFrame
+        end
+    end
+    if not istt then
+        error("Could not find player MAKE SURE TO TYPE FULL USERNAME NOT DISPLAY NAME")
+    end
+    Character.HumanoidRootPart.CFrame = lol
+end
+local function TeleportToPart(pname) -- Teleports to part name
+    local isdsa
+    for i,v in pairs(workspace:GetDescendants()) do
+        if v.Name == pname and v:IsA("Part") then
+            isdsa = true
+            Character.HumanoidRootPart.CFrame = v.CFrame
+            break
+        elseif v.Name == pname and v:IsA("BasePart") then
+            isdsa = true
+            Character.HumanoidRootPart.CFrame = v.CFrame
+            break
+        elseif v.Name == pname and v:IsA("MeshPart") then
+            isdsa = true
+            Character.HumanoidRootPart.CFrame = v.CFrame
+            break
+        end
+    end
+    if not isdsa then
+        error("Could not find part lol")
+    end
+end
+
+--[[
+NOTE EVERYTHING IS CAPS SENSITIVE and you prob want to check console by /console or F9 if something doesnt work error will be provided amd if not join discord https://discord.gg/xwy5Cu62Vw
+
+Now that these Variables are in Place all you have to do
+is do something like
+Speed(999)
+Changes walk speed to 999
+or
+TeleportToPlayer("testplayer")
+is to teleport to a player obviously where test player is where you would put theyre real full username not display name
+teleport to CFrame is so lets say you do this and open F9 to show console or just type /console in chat
+print(Location)
+that will get  your location as the first 3 numbers x,y,z so if you do
+Teleport(x,y,z)
+and replace x,y,z with the first 3 numbers you got then you will teleport to that location and it will stay the same
+ok now teleporttopart is a pretty advanced one so what you will need to do is open up dex and go to workspace and things that are parts and there names so
+TeleportToPart("Partnamehere")
+and it will teleport you to that part
+]]

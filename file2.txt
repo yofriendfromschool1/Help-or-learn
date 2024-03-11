@@ -1,0 +1,2 @@
+<union<function, nil>, <string?>> loadfile(<string> path)  
+<table> listfiles(<string> folder)

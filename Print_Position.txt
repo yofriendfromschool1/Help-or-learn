@@ -1,0 +1,2 @@
+print(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+-- Position and CFrame are the same thing but position is better

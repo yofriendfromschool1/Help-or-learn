@@ -1,0 +1,31 @@
+-- https://x.synapse.to/docs/reference/console.html
+rconsoleprint('@@RED@@')
+rconsoleprint('this is red')
+--[[ 
+Color	Code
+Black	@@BLACK@@
+Blue	@@BLUE@@
+Green	@@GREEN@@
+Cyan	@@CYAN@@
+Red	@@RED@@
+Magenta	@@MAGENTA@@
+Brown	@@BROWN@@
+Light Gray	@@LIGHT_GRAY@@
+Dark Gray	@@DARK_GRAY@@
+Light Blue	@@LIGHT_BLUE@@
+Light Green	@@LIGHT_GREEN@@
+Light Cyan	@@LIGHT_CYAN@@
+Light Red	@@LIGHT_RED@@
+Light Magenta	@@LIGHT_MAGENTA@@
+Yellow	@@YELLOW@@
+White	@@WHITE@@
+]]--
+rconsoleinfo('message')
+rconsolewarn('message')
+rconsoleerr('errormessage')
+rconsoleclear()
+rconsolename('title')
+<string> rconsoleinput()
+rconsoleclose()
+-- internal UI below
+printconsole(<string> message, <byte> red, <byte> green, <byte> blue)

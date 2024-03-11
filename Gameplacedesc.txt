@@ -1,0 +1,2 @@
+-- where it says 192800 put your game.PlaceId
+print(game:GetService("MarketplaceService"):GetProductInfo(192800).Description)

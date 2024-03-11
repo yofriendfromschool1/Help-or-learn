@@ -1,0 +1,3 @@
+--find a link like this https://web.roblox.com/library/rbxassetidhere/name
+-- put the asset id where it says LOL delete the LOL and replace it with the rbxid
+loadstring(game:GetObjects("rbxassetid://LOL")[1].Source)()

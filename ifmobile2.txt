@@ -1,0 +1,22 @@
+local UserInputService = game:GetService("UserInputService")
+
+-- Function to check if the player is on a mobile device
+local function isMobile()
+    return UserInputService.TouchEnabled
+end
+
+-- Check if the player is on a mobile device
+if isMobile() then
+    -- Your mobile-specific script goes here
+    print("You're on a mobile device!")
+else
+    -- Optional: Provide a message or execute alternative code if the player is not on mobile
+    print("You're not on a mobile device.")
+end
+
+-- or
+local UserInputService = game:GetService("UserInputService")
+
+if UserInputService.TouchEnabled then
+--script here
+end

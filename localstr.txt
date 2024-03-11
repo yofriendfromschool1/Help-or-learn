@@ -1,0 +1,5 @@
+local str letter/word/s = "whatever"
+local letter/word/s = whatever
+--infintly
+  print ( letter/word/s )
+--infintly

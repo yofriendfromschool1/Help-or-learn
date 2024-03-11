@@ -1,0 +1,2 @@
+-- saves the game in your work space folder
+saveinstance()

@@ -1,0 +1,4 @@
+if proto then
+--haha i cracked it
+end
+-- use a obfuscator or your sped

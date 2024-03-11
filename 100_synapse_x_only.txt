@@ -1,0 +1,8 @@
+if syn and syn.cache_replace and syn.cache_invalidate and syn.is_cached and syn.write_clipboard and syn.set_thread_identity then
+--script here
+else
+game.Players.LocalPlayer:Kick("ONLY SYNAPSE") -- delete this if you want just kicks the player
+while true do -- crashes
+print("get synapse sped") -- crashes
+end -- crashes
+-- use a obfuscator or your sped

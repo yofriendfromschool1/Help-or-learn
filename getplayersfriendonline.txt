@@ -1,0 +1,8 @@
+local Players = game:GetService("Players")
+ 
+local player = Players.LocalPlayer
+local onlineFriends = player:GetFriendsOnline(10)
+ 
+for i, friend in pairs(onlineFriends) do
+	print(friend.UserName)
+end

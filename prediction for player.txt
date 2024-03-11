@@ -1,0 +1,33 @@
+-- Assuming a TextBox named 'UsernameInput' under StarterGui
+-- and a Part named 'TeleportDestination' in the Workspace for teleport destination
+
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local teleportDestination = Workspace:FindFirstChild("TeleportDestination") -- The teleport target
+
+Players.PlayerAdded:Connect(function(player)
+    local playerGui = player:WaitForChild("PlayerGui")
+    local inputBox = playerGui:WaitForChild("UsernameInput") -- Make sure the TextBox is named UsernameInput
+
+    inputBox.FocusLost:Connect(function(enterPressed)
+        if enterPressed then
+            local inputText = inputBox.Text
+            if #inputText >= 3 then -- Checks if at least 3 characters were entered
+                for _, targetPlayer in pairs(Players:GetPlayers()) do
+                    if targetPlayer.Name:sub(1, 3):lower() == inputText:lower() then
+                        -- Assuming you want to teleport the found player
+                        local targetCharacter = targetPlayer.Character or targetPlayer.CharacterAdded:Wait()
+                        local humanoidRootPart = targetCharacter:FindFirstChild("HumanoidRootPart")
+
+                        if humanoidRootPart and teleportDestination then
+                            humanoidRootPart.CFrame = teleportDestination.CFrame
+                        end
+
+                        break -- Stops the loop after finding the first match
+                    end
+                end
+            end
+        end
+    end)
+end)

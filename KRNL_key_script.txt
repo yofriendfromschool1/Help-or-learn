@@ -1,0 +1,40 @@
+-- ATCUALLY WORKS WITH YOUR KEY put in autoexc btw
+    rconsoleprint("[")
+    rconsoleprint("@@"..color.."@@")
+    rconsoleprint("KEY")
+    rconsoleprint("@@LIGHT_GRAY@@")
+    rconsoleprint("]")
+end
+function getversion()
+    local ver = game:HttpGet("https://cdn.krnl.ca/version.txt"):split("")
+    return "v"..ver[1].."."..ver[2].."."..ver[3]..ver[4]..ver[5]:lower()
+end
+function checkingkey()
+    rconsolename("krnl "..getversion())
+    key("GREEN")
+    rconsoleprint(" Please enter your key: ")
+    local input = rconsoleinput()
+    key("GREEN")
+    rconsoleprint(" Checking key. (this might take some time..\n")
+    if input == "key" or input == game:HttpGet("https://cdn.krnl.ca/getkey.php"):split('value="')[2]:split('" placeholder')[1] then
+        key("GREEN")
+        rconsoleprint(" Correct key!\n")
+        wait(0.7)
+        rconsoleclose()
+    else
+        key("RED")
+        rconsoleprint(" Incorrect key!\n")
+        checkingkey()
+    end
+end
+function inject()
+    rconsoleclear()
+    rconsoleinfo("Checking version.")
+    wait(0.7)
+    rconsoleinfo("Scanning.")
+    wait(1)
+    key("GREEN")
+    rconsoleprint(" Please get a key here: https://cdn.krnl.ca/getkey.php\n")
+    checkingkey()
+end
+inject()

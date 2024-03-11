@@ -1,0 +1,10 @@
+ local plr = game:GetService("Players")
+    local lplr = plr.LocalPlayer
+    local image = script.Parent
+    local rs = game:GetService("RunService")
+    local userid = lplr.UserId
+    local thumbType = Enum.ThumbnailType.HeadShot
+    local thumbSize = Enum.ThumbnailSize.Size60x60
+    local content, isReady = plr:GetUserThumbnailAsync(userid, thumbType, thumbSize)
+    
+    image.Image = content

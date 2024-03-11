@@ -1,0 +1,33 @@
+local Players = game:GetService("Players")
+ 
+local USERNAME = "Shedletsky"
+ 
+local function iterPageItems(pages)
+	return coroutine.wrap(function()
+		local pagenum = 1
+		while true do
+			for _, item in ipairs(pages:GetCurrentPage()) do
+				coroutine.yield(item, pagenum)
+			end
+			if pages.IsFinished then
+				break
+			end
+			pages:AdvanceToNextPageAsync()
+			pagenum = pagenum + 1
+		end
+	end)
+end
+ 
+-- First, get the user ID of the player
+local userId = Players:GetUserIdFromNameAsync(USERNAME)
+-- Then, get a FriendPages object for their friends
+local friendPages = Players:GetFriendsAsync(userId)
+-- Iterate over the items in the pages. For FriendPages, these
+-- are tables of information about the friend, including Username.
+-- Collect each username in a table
+local usernames = {}
+for item, pageNo in iterPageItems(friendPages) do
+	table.insert(usernames, item.Username)
+end
+-- and finally, print!
+print("Friends of " .. USERNAME .. ": " .. table.concat(usernames, ", "))

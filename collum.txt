@@ -1,0 +1,11 @@
+-- it prints l then lol
+local script = {
+"l";
+"lol";
+}
+
+for i, v in pairs(script) do
+print(v) --if you change v to i it will print how many  lines/scripts there are
+end -- or
+local whatever = [[
+]]

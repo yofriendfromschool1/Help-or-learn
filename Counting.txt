@@ -1,0 +1,15 @@
+n = 1 -- starting number
+while true do -- repeater
+	print(n)
+	n = n + 1 -- adding by
+end
+--[[
+IMPORTANT
+if your gonna execute this to roblox then do
+n = 1
+while true do
+	print(n)
+	n = n + 1
+	wait(0.001) -- so your game doesnt crash
+end
+]]--

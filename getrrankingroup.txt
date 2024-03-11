@@ -1,0 +1,7 @@
+game.Players.PlayerAdded:Connect(function(Player)
+    if Player:GetRankInGroup(2) == 255 then
+        print("Player is the owner of the group, 'LOL'!")
+    else
+        print("Player is NOT the owner of the group, 'LOL'!")
+    end
+end)

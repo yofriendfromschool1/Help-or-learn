@@ -1,0 +1,5 @@
+game.Players.PlayerAdded:Connect(function(player)
+	if player:IsFriendsWith(146569) then
+		print(player.Name .. " is friends with gordonrox24!")
+	end
+end)

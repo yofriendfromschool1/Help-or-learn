@@ -1,0 +1,6 @@
+--use local script in studio
+if game.Players.LocalPlayer.Name == "SkyIsntAHack" then
+	script.Parent.Enabled = true
+else
+	script.Parent.Enabled = false
+end

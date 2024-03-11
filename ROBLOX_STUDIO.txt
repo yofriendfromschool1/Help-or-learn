@@ -1,0 +1,4 @@
+script.Parent.MouseButton1Down:Connect(function()
+-- whatever
+	end)
+--or script.Parent.Parent whatever the thing is in there

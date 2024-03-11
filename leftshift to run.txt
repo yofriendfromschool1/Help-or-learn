@@ -1,0 +1,21 @@
+local player = game:GetService("Players").LocalPlayer
+local UIS = game:GetService("UserInputService")
+
+function ShiftPressed()
+ local ShiftHeld = UIS:IsKeyDown(Enum.KeyCode.LeftShift)
+ 
+ if ShiftHeld then
+  player.Character.Humanoid.WalkSpeed = 24 --The 24 is the speed YOU want! change it to whatever you would like.
+ end
+end
+
+function ShiftReleased()
+ local ShiftHeld = UIS:IsKeyDown(Enum.KeyCode.LeftShift)
+
+ if ShiftHeld == false then
+  player.Character.Humanoid.WalkSpeed = 16 -- 16 is the default walkspeed!!!
+ end
+end
+
+UIS.InputBegan:Connect(ShiftPressed)
+UIS.InputEnded:Connect(ShiftReleased)

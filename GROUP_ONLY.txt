@@ -1,0 +1,7 @@
+local player = game.Players.LocalPlayer
+local groupId = Group ID here 
+if player:IsInGroup(groupId) then 
+	script.Parent.Visible = true
+	else
+	script.Parent.Visible = false
+	end

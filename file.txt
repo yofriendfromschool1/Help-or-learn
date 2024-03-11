@@ -1,0 +1,5 @@
+writefile("test.txt", "Testing!") -- Makes a file in workspace First Text is the name second is what is in the file
+appendfile("test.txt", "Testing!") -- Same as write file but doesnt over write the file
+readfile("test.txt") -- reads a file if it exists, erroring if it does not.
+isfile("test.txt") -- returns true if you specified a valid file.
+delfile("test.txt") -- Deletes a file

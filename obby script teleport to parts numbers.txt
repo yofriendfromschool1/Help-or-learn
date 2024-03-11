@@ -1,0 +1,47 @@
+-- easy obby
+getgenv().collectOrbsToggle = false
+
+spawn(function()
+    local checkpoints = game:GetService("Workspace").Stages:GetChildren()
+    table.sort(checkpoints, function(a, b)
+        return tonumber(a.Name) < tonumber(b.Name)
+    end)
+    
+    while wait() do
+        if not getgenv().collectOrbsToggle then 
+            break 
+        end
+        
+        for i, checkpoint in ipairs(checkpoints) do
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = checkpoint.CFrame
+                wait(0.001) -- Adjust the wait time as needed
+            end
+        end
+        wait(3)
+        -- enter rebirth here if needed
+end)
+-- emo obby
+getgenv().collectOrbsToggle = true
+
+spawn(function()
+    local checkpoints = game:GetService("Workspace").Checkpoints:GetChildren()
+    table.sort(checkpoints, function(a, b)
+        return tonumber(a.Name) < tonumber(b.Name)
+    end)
+    
+    while wait() do
+        if not getgenv().collectOrbsToggle then 
+            break 
+        end
+        
+        for i, checkpoint in ipairs(checkpoints) do
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = checkpoint.CFrame
+                wait(0.001) -- Adjust the wait time as needed
+        end
+            wait(3)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Rebirth.CFrame
+            wait(4)
+            fireproximityprompt(game.workspace.Rebirth.Prompt)
+            wait(2)
+    end
+end)
