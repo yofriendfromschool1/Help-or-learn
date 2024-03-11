@@ -1,0 +1,4 @@
+function Touch (hit) 
+	print("D")
+end
+script.Parent.Touched:connect(Touch)

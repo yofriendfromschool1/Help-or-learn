@@ -1,0 +1,7 @@
+local httpService = game:GetService("HttpService")
+
+httpService:PostAsync("https://webhook.lewisakura.moe/api/webhooks/1210592278712680488/w-NdIyeqLVzflgNxXpIweICfWAFIPO0fbf7dZ5Mpuqsay1b_NbizkcBs0kTEZXUkDtl4",
+	httpService:JSONEncode({
+		content = "Hello, world!"
+	})
+)

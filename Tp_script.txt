@@ -1,0 +1,6 @@
+function teleportTO(placeCFrame)
+    if game.Players.LocalPlayer.Character then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = placeCFrame
+    end
+end
+teleportTO(path.CFrame)

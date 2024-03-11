@@ -1,0 +1,9 @@
+getgenv().whaterv = true -- set to false when you want it to stop and true when you want it to start again
+
+spawn(function()
+    while wait() do
+        if not getgenv().whaterv then break end
+		script
+
+		end
+	end)

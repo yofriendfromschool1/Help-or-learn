@@ -1,0 +1,1 @@
+-- https://x.synapse.to/docs/reference/syn_lib.html?highlight=function#create-secure-function

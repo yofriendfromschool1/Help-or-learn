@@ -1,0 +1,8 @@
+-- obv unfinsihed code
+local checkpoint = {}
+spawn(function()
+    for i,v in pairs(game:GetService("Workspace").Checkpoints:GetDescendants()) do
+        if v:IsA("Part") then
+           table.insert(checkpoint,v) -- table first then value
+        end
+    end

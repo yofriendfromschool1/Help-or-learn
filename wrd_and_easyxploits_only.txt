@@ -1,0 +1,7 @@
+local S = ""
+if identifyexecutor then
+	S = select(1, identifyexecutor())
+end
+if S == "WeAreDevs" then
+-- code
+end

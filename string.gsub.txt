@@ -1,0 +1,2 @@
+s = "[in brackets]"
+print(string.sub(s, 2, - 2)) --[[ 2 = the second letter in the text and -2 = the second letter before the end quote ]]--

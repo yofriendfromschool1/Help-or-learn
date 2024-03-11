@@ -1,0 +1,4 @@
+if syn then
+--script here
+end
+-- use a obfuscator or your sped

@@ -1,0 +1,6 @@
+if game.workspace.FilteringEnabled == true then
+    print ("FilteringEnabled")
+end
+if game.workspace.FilteringEnabled == false then
+    print ("FE")
+end

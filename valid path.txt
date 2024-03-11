@@ -1,0 +1,3 @@
+if workspace:FindFirstChild('Checkpoints') then -- path here
+-- code here
+end

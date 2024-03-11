@@ -1,0 +1,2 @@
+game.Players.LocalPlayer.CameraMaxZoomDistance = 70; -- set 70 to max distance what you want
+workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;

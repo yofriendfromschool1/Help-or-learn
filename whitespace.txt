@@ -1,0 +1,2 @@
+-- \t = white space
+print("Hi!\tThis Is White Space!")

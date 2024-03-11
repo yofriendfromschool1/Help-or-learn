@@ -1,0 +1,4 @@
+for i, checkpoint in ipairs(checkpoints) do
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = checkpoint.CFrame + Vector3.new(0, 5, 0) -- vector tps player 5 studs above part bc x y z
+                wait(0.5) -- Adjust the wait time as needed
+        end

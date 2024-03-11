@@ -1,0 +1,1 @@
+UserSettings():GetService("UserGameSettings").MasterVolume = --number 1-10

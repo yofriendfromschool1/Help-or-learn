@@ -1,0 +1,2 @@
+- - is simliar to string.find
+print(string.match("hello world", "hello"))

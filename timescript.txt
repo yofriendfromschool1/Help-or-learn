@@ -1,0 +1,7 @@
+while wait(1) do
+    local currentTime = os.date("*t")
+
+    local hours, mins, secs = currentTime.hour, currentTime.min, currentTime.sec
+
+    yourtextlabel.Text = string.format("%02d:%02d:%02d", hours, mins, secs) -- change yourtextlabel to your textlabel name thingy
+end

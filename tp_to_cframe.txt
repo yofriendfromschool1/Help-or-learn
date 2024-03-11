@@ -1,0 +1,1 @@
+Game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(cframepostion1, cframepostion2, cframepostion3)

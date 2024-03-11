@@ -1,0 +1,571 @@
+--[[
+    name - dumpstring transpiler
+    description - a fully working dumpstring transpiler, decompile with unluac
+    author - cyclops
+    notes - i made this in about 1 hour or more, imo it was pretty easy
+
+    supported versions: lua 5.2.4+
+]]
+
+-- utilities
+local bit = require('bit32');
+
+-- bytecode stream
+local vanilla_dumper = { };
+vanilla_dumper.sizet_size = 4;
+vanilla_dumper.int_size = 4;
+
+local bytecode_stream = { };
+do
+    bytecode_stream.__index = bytecode_stream;
+    bytecode_stream.__tostring = function(self)
+        return table.concat(self.buffer_);
+    end
+
+    function bytecode_stream.new()
+        return setmetatable({
+            buffer_ = { };
+        }, bytecode_stream);
+    end
+
+    function bytecode_stream:write_int(number, int_size) -- big endian recursive order
+        int_size = int_size or vanilla_dumper.int_size;
+
+        self:write_byte(bit.band(number, 0xFF));
+
+        if (int_size == 1) then
+            return;
+        end
+        
+        
+        self:write_int(bit.rshift(number, 8), int_size - 1);
+
+        return self;
+    end
+
+    function bytecode_stream:write_byte(byte)
+        table.insert(self.buffer_, string.char(byte));
+
+        return self;
+    end
+
+    local function mantissa_to_bytes(m)
+        -- 54 bits
+        -- floor(2^k * m) = 2^k m_53 + ... + m_{53 - k}
+        -- 0 - 31 (32 bits), 32 - 54 (23 bits)
+        local hi = math.floor(0x100000 * m)
+        local lo = 0x100000 * m - hi
+        lo = math.floor(lo * 0x100000000)
+        hi = bit.band(0xfffff, hi)
+        return lo, hi
+      end
+    
+    function bytecode_stream:write_double(number)
+        if number == 0 then self:write_int(0, 8) return end
+        local m, e = math.frexp(number)
+        m = 2*m
+        e = e - 1
+        local lo, hi_m = mantissa_to_bytes(m)
+        -- 1 11 52
+        -- hi:63    - sign
+        -- hi:62-52 - exp
+        -- hilo - 0 - man
+        -- HI                               LO
+        -- 00000000000000000000000000000000 00000000000000000000000000000000
+        -- Seeeeeeeeeeemmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+        local hi_e = bit.lshift(bit.band(0x7ff, e + 1023), 20)
+        local sign = bit.lshift(number < 0 and 1 or 0, 31)
+        local hi = bit.bor(sign, bit.bor(hi_m, hi_e))
+        self:write_int(lo, 4)
+        self:write_int(hi, 4)
+      end
+
+
+    function bytecode_stream:write_string(str, sizet_size)
+        sizet_size = sizet_size or vanilla_dumper.sizet_size;
+
+        self:write_int(#str + 1, sizet_size);
+        for i = 1, #str do
+            self:write_byte(str:byte(i));
+        end
+
+        self:write_byte(0);
+
+        return self;
+    end
+end
+
+do
+    function vanilla_dumper.dump_header(writer)
+        writer:write_int(0x61754C1B)
+            :write_byte(0x51)
+            :write_byte(0)
+            :write_byte(1)
+
+            :write_byte(vanilla_dumper.int_size)
+            :write_byte(vanilla_dumper.sizet_size)
+            :write_byte(4)
+            :write_byte(8) -- lua_Number default 8
+
+            :write_byte(0);
+    end
+
+    function vanilla_dumper.dump_chunk(writer, chunk)
+        local function write_code()
+            writer:write_int(chunk.size_code); 
+            for i = 1, chunk.size_code do
+                local instruction = chunk.code[i];
+                
+                local data = 0;
+                data = bit.bor(data, instruction.opcode);
+                
+                if (instruction.type == 'AsBx') then
+                    data = bit.bor(data, bit.lshift(bit.band(instruction.a, 0xff), 6));
+                    data = bit.bor(data, bit.lshift(instruction.sbx + 131071, 14));
+                elseif (instruction.type == 'ABC') then
+                    data = bit.bor(data, bit.lshift(bit.band(instruction.a, 0xff), 6));
+                    data = bit.bor(data, bit.lshift(bit.band(instruction.c, 0x1ff), 6 + 8));
+                    data = bit.bor(data, bit.lshift(bit.band(instruction.b, 0x1ff), 6 + 8 + 9));
+                elseif (instruction.type == 'ABx') then
+                    data = bit.bor(data, bit.lshift(bit.band(instruction.a, 0xff), 6));
+                    data = bit.bor(data, bit.lshift(instruction.bx, 14));
+                end
+
+                writer:write_int(data);
+            end
+        end
+
+        local function write_constants()
+            writer:write_int(chunk.sizek);
+
+            for i = 1, chunk.sizek do
+                local value = chunk.constants[i];
+                
+                local value_tt = type(value);
+                if (value_tt == 'string') then
+                    writer:write_byte(4);
+                    writer:write_string(value);
+                elseif (value_tt == 'boolean') then
+                    writer:write_byte(1);
+                    writer:write_byte(value and 1 or 0);
+                elseif (value_tt == 'number') then
+                    writer:write_byte(3);
+                    writer:write_double(value);
+                else
+                    writer:write_byte(0);
+                end
+            end
+        end
+        
+        local function write_protos()
+            writer:write_int(chunk.sizep);
+            for i = 1, chunk.sizep do
+                vanilla_dumper.dump_chunk(writer, chunk.protos[i]);
+            end
+        end
+
+        local function write_debug()
+            writer:write_int(chunk.size_lineinfo);
+            for i = 1, chunk.size_lineinfo do
+                writer:write_int(chunk.lineinfo[i]);
+            end
+
+            writer:write_int(chunk.size_locvars);
+            for i = 1, chunk.size_locvars do
+                local locvar = chunk.locvars[i];
+                
+                writer:write_string(locvar.name);
+                
+                writer:write_int(locvar.start_pc);
+                writer:write_int(locvar.end_pc);
+            end
+
+            writer:write_int(chunk.size_upvalues);
+            for i = 1, chunk.size_upvalues do
+                writer:write_string(chunk.upvalue_names[i]);
+            end
+        end
+
+
+        if (vanilla_dumper.is_top == true) then
+            writer:write_string('@dumpstring_transpiler(' .. (chunk.name or 'empty') .. ')');
+            vanilla_dumper.is_top = false;
+        else
+            writer:write_string('');
+        end
+        
+        writer:write_int(chunk.line_defined);
+        writer:write_int(chunk.last_line_defined);
+
+        writer:write_byte(chunk.nups);
+        writer:write_byte(chunk.num_parameters);
+        
+        writer:write_byte(chunk.vararg_flag);
+        writer:write_byte(chunk.max_stack_size);
+
+        write_code();
+        write_constants();
+        write_protos();
+
+        write_debug();
+    end
+
+    function vanilla_dumper.dump(chunk)
+        local writer = bytecode_stream.new();
+        
+        vanilla_dumper.is_top = true;
+        vanilla_dumper.dump_header(writer);
+        vanilla_dumper.dump_chunk(writer, chunk);
+
+        return tostring(writer);
+    end
+end
+
+local function unpack_bits(Bit, Start, End) -- No tail-calls, yay.
+    if End then -- Thanks to cntkillme for giving input on this shorter, better approach.
+        local Res	= (Bit / 2 ^ (Start - 1)) % 2 ^ ((End - 1) - (Start - 1) + 1);
+
+        return Res - Res % 1;
+    else
+        local Plc = 2 ^ (Start - 1);
+
+        if (Bit % (Plc + Plc) >= Plc) then
+            return 1;
+        else
+            return 0;
+        end;
+    end;
+end;
+
+local sxl_undump;
+do
+    -- same as vanilla set with some changes
+    -- note: SYNGETGLOBAL & SYNSETGLOBAL appear on some constants cases (probably cause of LuaU global caching)
+
+    local syn_openum = {
+        "MOVE",     
+        "LOADK",     
+        "LOADBOOL", 
+        "LOADNIL",
+        "GETUPVAL", 
+        "GETGLOBAL",
+        "GETTABLE",  
+        "SETGLOBAL",
+        "SETUPVAL", 
+        "SETTABLE",  
+        "NEWTABLE", 
+        "SELF",
+        "ADD",      
+        "SUB",       
+        "MUL",      
+        "DIV",
+        "MOD",      
+        "POW",       
+        "UNM",      
+        "NOT",
+        "LEN",      
+        "CONCAT",    
+        "JMP",      
+        "EQ",
+        "LT",       
+        "LE",       
+        "TEST",     
+        "TESTSET",
+        "CALL",     
+        "TAILCALL",  
+        "RETURN",   
+        "FORLOOP",
+        "FORPREP", 
+        "TFORLOOP", 
+        "SETLIST",  
+        "CLOSE",
+        "CLOSURE",  
+        "VARARG",
+
+        [43] = 'SYNGETGLOBAL';
+        [44] = 'SYNSETGLOBAL';
+    };
+
+    local syn_optype = {
+        'ABC',	'ABx',	'ABC',	'ABC';
+        'ABC',	'ABx',	'ABC',	'ABx';
+        'ABC',	'ABC',	'ABC',	'ABC';
+        'ABC',	'ABC',	'ABC',	'ABC';
+        'ABC',	'ABC',	'ABC',	'ABC';
+        'ABC',	'ABC',	'sAx',	'ABC';
+        'ABC',	'ABC',	'ABC',	'ABC';
+        'ABC',	'ABC',	'ABC',	'AsBx';
+        'AsBx',	'ABC',	'ABC',	'ABC';
+        'ABx',	'ABC';
+
+        [43] = 'ABx'; -- SYNGETGLOBAL
+        [44] = 'ABx'; -- SYNSETGLOBAL
+    };
+
+    local sxl_signature = '\27SXL';
+    
+      function sxl_undump(bytecode)
+        local stream_position = 1;
+        local read_sizet;
+
+        local function read_dword()
+            local w, x, y, z = string.byte(bytecode, stream_position, stream_position + 3);
+            
+            stream_position = stream_position + 4;
+
+            return (z * 16777216) + (y * 65536) + (x * 256) + w;
+        end
+
+        local function read_double()
+            -- thanks @Eternal for giving me this so I could mangle it in here and have it work
+            local Left = read_dword();
+            local Right = read_dword();
+            local IsNormal = 1
+            local Mantissa = (unpack_bits(Right, 1, 20) * (2 ^ 32))
+                            + Left;
+
+            local Exponent = unpack_bits(Right, 21, 31);
+            local Sign = ((-1) ^ unpack_bits(Right, 32));
+
+            if (Exponent == 0) then
+                if (Mantissa == 0) then
+                    return Sign * 0 -- +-0
+                else
+                    Exponent = 1
+                    IsNormal = 0
+                end
+            elseif (Exponent == 2047) then
+                if (Mantissa == 0) then
+                    return Sign * (1 / 0) -- +-Inf
+                else
+                    return Sign * (0 / 0) -- +-Q/Nan
+                end
+            end
+
+            -- sign * 2**e-1023 * isNormal.mantissa
+            return math.ldexp(Sign, Exponent - 1023) * (IsNormal + (Mantissa / (2 ^ 52)))
+        end
+
+        local function read_byte()
+            local result = string.byte(bytecode, stream_position, stream_position);
+            
+            stream_position = stream_position + 1;
+
+            return result;
+        end
+
+        local function read_string(length)
+            local result;
+
+            length = length or read_sizet();
+            if (length == 0) then
+                return;
+            end
+
+            result = string.sub(bytecode, stream_position, stream_position + length - 1);
+
+            stream_position = stream_position + length;
+
+            return result;
+        end
+
+
+        local function read_qword()
+            return read_dword() * 4294967296 + read_dword();
+        end
+
+        local function read_chunk()
+           local code = { };
+           local constants = { };
+           local protos = { };
+
+           -- recovering debug info
+           local lineinfo = { };
+           local locvars = { };
+           local upvalue_names = { };
+
+           local chunk = {
+               lineinfo = lineinfo;
+               locvars = locvars;
+               upvalue_names = upvalue_names;
+
+               constants = constants;
+               code = code;
+               protos = protos;
+           };
+
+           -- init
+           chunk.name = read_string();
+           chunk.line_defined = read_dword();
+           chunk.last_line_defined = read_dword();
+
+           chunk.nups = read_byte();
+           chunk.num_parameters = read_byte();
+           
+           chunk.vararg_flag = read_byte();
+
+           chunk.max_stack_size = read_byte();
+
+           -- decode instructions
+           chunk.size_code = read_dword();
+           for i = 1, chunk.size_code do
+                local instruction = read_dword();
+
+                -- same insn format as vanilla lua with some changes
+
+                local opcode = unpack_bits(instruction, 1, 6);
+                local type = syn_optype[opcode + 1];
+
+                local new_instruction = { 
+                    opcode = opcode,
+                    type = type,
+                    value = instruction,
+                    a = unpack_bits(instruction, 7, 14);
+                };
+
+                if (type == 'ABC') then
+                    new_instruction.b = unpack_bits(instruction, 24, 32);
+                    new_instruction.c = unpack_bits(instruction, 15, 23);
+                elseif (type == 'ABx') then
+                    new_instruction.bx = unpack_bits(instruction, 15, 32);
+                elseif (type == 'AsBx') then
+                    new_instruction.sbx = unpack_bits(instruction, 15, 32) - 131071;
+                elseif (type == 'sAx') then -- JMP edge case
+                    new_instruction.sax = unpack_bits(instruction, 7, 32) - 0x1FFFFFF;
+                end
+
+
+                -- emplace to instructions
+                code[i] = new_instruction;
+           end
+            
+           -- decode constants
+           chunk.sizek = read_dword();
+           for i = 1, chunk.sizek do
+                local kst_type = read_byte();
+                local kst_result;
+
+                if (kst_type == 1) then -- LUA_TBOOL
+                    kst_result = (read_byte() ~= 0);
+                elseif (kst_type == 2) then -- LUA_TNIL
+                    kst_result = nil;
+                elseif (kst_type == 3) then -- LUA_TNUMBER
+                    kst_result = read_double();
+                elseif (kst_type == 4) then -- LUA_TSTRING
+                    kst_result = string.sub(read_string(), 1, -2);
+                end
+
+                constants[i] = kst_result;
+           end
+
+           -- decode protos
+           chunk.sizep = read_dword();
+           for i = 1, chunk.sizep do
+              protos[i] = read_chunk();
+           end
+
+          -- decode debug info
+           do           
+                chunk.size_lineinfo = read_dword();
+                for i = 1, chunk.size_lineinfo do
+                    lineinfo[i] = read_dword();
+                end
+
+                chunk.size_locvars = read_dword();
+                for i = 1, chunk.size_locvars do
+                    locvars[i] = {
+                        name = string.sub(read_string(), 1, -2);
+                        start_pc = read_dword();
+                        end_pc = read_dword();
+                    };
+                end 
+
+                chunk.size_upvalues = read_dword();
+                for i = 1, chunk.size_upvalues do
+                    upvalue_names[i] = string.sub(read_string(), 1, -2);
+                end
+           end
+           
+           return chunk;
+        end
+
+        -- read header
+
+        assert(read_string(4) == sxl_signature, '[dumpstring_transpiler]: synapse bytecode expected (header)');
+        
+        read_byte();
+
+        read_byte(); -- format
+        read_byte(); -- endianness flag (ignore)
+
+        local int_size = read_byte();
+        local sizet_size = read_byte(); -- 8 (depends on synapse's write sz)
+
+        if (sizet_size == 4) then
+            read_sizet = read_dword;
+        elseif (sizet_size == 8) then
+            read_sizet = read_qword;
+        else
+            error('[dumpstring_transpiler]: malformed sxl bytecode (header/sizet)', 2);
+        end
+        
+        read_string(3);
+
+        return read_chunk();
+    end
+end
+
+local function cross_transpile_chunk(chunk) -- sxl -> vanilla
+    local function transpile_code()
+        local code = chunk.code;
+        for i = 1, #code do
+            local instruction = code[i];
+
+            -- recover format
+            if (instruction.type == 'sAx') then -- JMP: sAx -> AsBx
+                instruction.a = 0;
+                instruction.sbx = instruction.sax;
+                instruction.sax = 0;
+                instruction.type = 'AsBx';
+            end
+
+            -- recover instruction
+            if (instruction.opcode == 42) then -- OP_SYNGETGLOBAL, no format changes
+                instruction.opcode = 5; -- OP_GETGLOBAL (normal)
+            elseif (instruction.opcode == 43) then -- OP_SYNSETGLOBAL, no format changes
+                instruction.opcode = 7; -- OP_SETGLOBAL (normal)
+            end
+        end
+    end
+
+    transpile_code();
+
+    for i = 1, chunk.sizep do
+        cross_transpile_chunk(chunk.protos[i]);
+    end
+
+    return chunk;
+end
+
+
+local function cross_transpile_bytecode(bytecode)
+    local chunk = sxl_undump(bytecode);
+    chunk = cross_transpile_chunk(chunk);
+
+    local result = vanilla_dumper.dump(chunk);
+
+    return result;
+end
+
+-- main
+do
+    local input_file = io.open('test.sxl', 'rb');   
+    local input_bytecode = input_file:read('*a');
+    input_file:close();
+
+    local result = cross_transpile_bytecode(input_bytecode);
+
+    local output_file = io.open('output.luac', 'wb');
+    output_file:write(result);
+    output_file:close();
+end

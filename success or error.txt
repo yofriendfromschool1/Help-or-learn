@@ -1,0 +1,9 @@
+local lol = "print(2)"
+local success,result = pcall(function()
+	assert(loadstring(lol))()	
+end)
+if success then
+	print("Success")
+else
+	print("Error: "..result)
+end

@@ -1,0 +1,2 @@
+game.Players.LocalPlayer.Character:MoveTo(game.Players.LocalPlayer.Character.Humanoid.RootPart.Position)
+-- tp back to old postion before tp
