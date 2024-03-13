@@ -1,0 +1,5 @@
+for i, v in pairs(game.Players:GetPlayers()) do
+        if string.sub(string.lower(v.Name), 0, #var) == string.lower(var) or string.sub(string.lower(v.DisplayName), 0, #var) == string.lower(var) then
+		-- script
+	end
+end
