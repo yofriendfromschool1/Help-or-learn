@@ -1,0 +1,26 @@
+local stop
+		for i, v in pairs(workspace.Vehicles:GetDescendants()) do
+			if stop == 1 then
+				break
+			end
+			if v.Name == "VehicleSeat" and v.Parent.Parent.Name == txt then
+				game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+				for i, v in pairs(v:GetDescendants()) do
+					wait(0.001)
+					if v:IsA("ProximityPrompt") then
+						fireproximityprompt(v)
+						game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent.CFrame
+						stop = stop + 1
+					end
+				end
+			elseif workspace:FindFirstChild(txt) == nil then
+				game.StarterGui:SetCore("SendNotification",  {
+					Title = "Could not find player";
+					Text = "please put their real full user not display name";
+					Icon = "";
+					Duration = 5;
+					Callback = NotificationBindable;
+				})
+				break
+			end
+		end
