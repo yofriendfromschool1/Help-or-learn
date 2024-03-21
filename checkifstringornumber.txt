@@ -1,0 +1,6 @@
+local lol 
+if type(tonumber(lol)) == "number" then
+	print("Number")
+elseif type(tostring(lol)) == "string" then
+	print("String")
+end
