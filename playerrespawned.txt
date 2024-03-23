@@ -1,0 +1,3 @@
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(character)
+   -- put script here when u respawn this will be executed
+end)

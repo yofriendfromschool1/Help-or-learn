@@ -1,0 +1,3 @@
+game:GetService("Players").PlayerRemoving:Connect(function(player)
+    -- script you want here when player leaves game
+end)

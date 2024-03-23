@@ -1,0 +1,3 @@
+game:GetService("Players").PlayerAdded:Connect(function(player)
+    -- script here that you want when a player joins game
+end)
