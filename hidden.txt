@@ -1,0 +1,2 @@
+sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
+gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop
