@@ -1,0 +1,1 @@
+game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position, game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position + Vector3.new(0, 0, -1)) -- (putnumbershere)
