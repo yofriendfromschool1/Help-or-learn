@@ -1,0 +1,10 @@
+local function FindLocal(Name)
+    for i,v in pairs(getgc())do
+        if type(v) == "function" then
+            for monkey, figger in pairs(debug.getupvalues(v)) do
+                if monkey == Name then return figger end
+            end
+        end
+    end
+end
+local Network = FindLocal("NetworkRemoteFunction")
