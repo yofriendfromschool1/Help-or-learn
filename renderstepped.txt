@@ -1,0 +1,7 @@
+-- this is basically a loop running every frame
+local event = game:GetService("RunService").RenderStepped:Connect(function()
+	print("YES")
+end)
+
+-- this is how to stop the loop
+event:Disconnect()
