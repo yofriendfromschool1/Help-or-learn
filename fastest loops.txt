@@ -48,6 +48,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 end)
 wait(5)
 print("RenderStepped: ".. renderstepped)
+-- techinally u can go faster just keep adding spawns and renderstepped
 -- or real multithreading EXECUTOR MUST HAVE run_on_actor
 local code = [[
 -- code here
@@ -59,41 +60,25 @@ game:GetService("RunService").RenderStepped:Connect(function()
 end)
 -- fastest possible right here
 local code = [[
-	local renderstepped = 1
-	game:GetService("RunService").RenderStepped:Connect(function()
-		renderstepped = renderstepped + 1
-		task.spawn(function()
-			game:GetService("RunService").RenderStepped:Connect(function()
-				renderstepped = renderstepped + 1
-				task.spawn(function()
-					game:GetService("RunService").RenderStepped:Connect(function()
-					renderstepped = renderstepped + 1
-					task.spawn(function()
-						game:GetService("RunService").RenderStepped:Connect(function()
-							renderstepped = renderstepped + 1
-							task.spawn(function()
-								game:GetService("RunService").RenderStepped:Connect(function()
-									renderstepped = renderstepped + 1
-									task.spawn(function()
-										game:GetService("RunService").RenderStepped:Connect(function()
-											renderstepped = renderstepped + 1
-										end) -- and so on
-									end)
-								end)
-							end)
-						end)
-					end)
-				end)
-			end)
-		end)
-	end)
-end)
-wait(5)
-print("RenderStepped: ".. renderstepped)
-]]
+function lol()
+    game:GetService("RunService").RenderStepped:Connect(function()
+        local args = {
+    [1] = "LayeredClothing",
+    [2] = workspace:WaitForChild("DressingRoom"):WaitForChild("UGCBoyLayeredClothing"):WaitForChild("Dummy"):WaitForChild("LayeredClothing")
+}
 
+game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+game:GetService("Players").LocalPlayer.Character:FindFirstChild("LayeredClothing"):Destroy()
+    end)
+end
 game:GetService("RunService").RenderStepped:Connect(function()
-	local thread = Instance.new("Actor",game.CoreGui)
-	run_on_actor(thread,code)
+    task.spawn(lol)
+end)]]
+game:GetService("RunService").RenderStepped:Connect(function()
+    task.spawn(function()
+        local thread = Instance.new("Actor",game:GetService("CoreGui"))
+        run_on_actor(thread,code)
+    end)
 end)
+-- techinally u can go faster just keep adding spawns and renderstepped and run on actors
 -- ^^ WILL MAKE UR GAME SO FUCKING LAGGY
