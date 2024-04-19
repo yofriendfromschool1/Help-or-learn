@@ -1,18 +1,6 @@
--- this is basically a loop running every frame or sum but its the fastest loop either this or render stepped
 local event = game:GetService("RunService").Stepped:Connect(function()
 	print("YES")
 end)
 
 -- this is how to stop the loop
 event:Disconnect()
-
--- how to make fastest possible
-function hi()
-	while true do task.wait()
-		print("hi")
-	end
-end
-game:GetService("RunService").Stepped:Connect(function()
-	task.spawn(hi)
-end)
--- or renderstepped
