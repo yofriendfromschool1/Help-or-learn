@@ -1,0 +1,99 @@
+-- if u need to something under 1000 times
+for i,v in pairs(thing) do
+	-- code here
+end
+-- or
+for i = 1,numberhereuwanttodomanytimes do
+	-- code here
+end
+-- or
+for i,v in ipairs(thing) do
+	-- code here
+end
+-- if u want to something unlimited times or for ever
+game:GetService("RunService").RenderStepped:Connect(function()
+	-- code here
+end)
+-- or
+repeat -- code here task.wait() until game:GetService("Players"):FindFirstChild("Lolneverfindingthischild") -- infintiy 
+-- or with multithreading
+local renderstepped = 1
+game:GetService("RunService").RenderStepped:Connect(function()
+	renderstepped = renderstepped + 1
+	task.spawn(function()
+		game:GetService("RunService").RenderStepped:Connect(function()
+			renderstepped = renderstepped + 1
+			task.spawn(function()
+				game:GetService("RunService").RenderStepped:Connect(function()
+					renderstepped = renderstepped + 1
+					task.spawn(function()
+						game:GetService("RunService").RenderStepped:Connect(function()
+							renderstepped = renderstepped + 1
+							task.spawn(function()
+								game:GetService("RunService").RenderStepped:Connect(function()
+									renderstepped = renderstepped + 1
+									task.spawn(function()
+										game:GetService("RunService").RenderStepped:Connect(function()
+											renderstepped = renderstepped + 1
+										end) -- and so on the more u do the more it will lag but the more faster it will be
+									end)
+								end)
+							end)
+						end)
+					end)
+				end)
+			end)
+		end)
+	end)
+end)
+wait(5)
+print("RenderStepped: ".. renderstepped)
+-- or real multithreading EXECUTOR MUST HAVE run_on_actor
+local code = [[
+-- code here
+]]
+
+game:GetService("RunService").RenderStepped:Connect(function()
+	local thread = Instance.new("Actor",game.CoreGui)
+	run_on_actor(thread,code)
+end)
+-- fastest possible right here
+local code = [[
+	local renderstepped = 1
+	game:GetService("RunService").RenderStepped:Connect(function()
+		renderstepped = renderstepped + 1
+		task.spawn(function()
+			game:GetService("RunService").RenderStepped:Connect(function()
+				renderstepped = renderstepped + 1
+				task.spawn(function()
+					game:GetService("RunService").RenderStepped:Connect(function()
+					renderstepped = renderstepped + 1
+					task.spawn(function()
+						game:GetService("RunService").RenderStepped:Connect(function()
+							renderstepped = renderstepped + 1
+							task.spawn(function()
+								game:GetService("RunService").RenderStepped:Connect(function()
+									renderstepped = renderstepped + 1
+									task.spawn(function()
+										game:GetService("RunService").RenderStepped:Connect(function()
+											renderstepped = renderstepped + 1
+										end) -- and so on
+									end)
+								end)
+							end)
+						end)
+					end)
+				end)
+			end)
+		end)
+	end)
+end)
+wait(5)
+print("RenderStepped: ".. renderstepped)
+]]
+
+game:GetService("RunService").RenderStepped:Connect(function()
+	local thread = Instance.new("Actor",game.CoreGui)
+	run_on_actor(thread,code)
+end)
+-- ^^ WILL MAKE UR GAME SO FUCKING LAGGY
