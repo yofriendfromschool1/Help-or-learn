@@ -1,0 +1,10 @@
+local LogService = game:GetService("LogService")
+
+local messageLabel = Instance.new("Message")
+messageLabel.Parent = workspace
+
+local function onMessageOut(message, messageType)
+	messageLabel.Text = "The message was " .. message .. " and the type was " .. tostring(messageType)
+end
+
+LogService.MessageOut:Connect(onMessageOut)
