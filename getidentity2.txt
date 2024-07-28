@@ -1,0 +1,40 @@
+local function try(fn, ...)
+    return (pcall(fn, ...))
+end
+
+local capabilities_tests = {
+    {function() return game:GetService("CoreGui").Name end, 1},
+    {function() return game.DataCost end, 2},
+    {function() return Instance.new("Player") end, 4},
+    {function() return game:GetService("CorePackages").Name end, 8},
+    {function() return Instance.new("SurfaceAppearance").TexturePack end, 0x10},
+    {function() Instance.new("MeshPart").MeshId = "" end, 0x20},
+}
+
+local identities_fromcapabilities = {3, 0, 11, 3, 1, 11, 63, 63, 12}
+
+local function get_capabilities()
+    local capability = 0
+    for a, b in next, capabilities_tests do
+        if try(b[1]) then
+            capability = bit32.bxor(capability, b[2])
+        end
+    end
+    
+    return capability
+end
+
+local function get_identity()
+    local matched_identities = {}
+    local current_capabilities = get_capabilities()
+    
+    for a, b in next, identities_fromcapabilities do
+        if b == current_capabilities then
+            table.insert(matched_identities, a)
+        end
+    end
+    
+    print("Your executor's identity might be", table.concat(matched_identities, " or "))
+end
+
+get_identity()
